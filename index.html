@@ -29,14 +29,26 @@
 
         // Crear geometría de un cubo
         var geometry = new THREE.BoxGeometry();
-        // Nota: "color" debe ir en minúsculas
-        var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});  // Verde
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});  // Verde con wireframe
         var cube = new THREE.Mesh(geometry, material);
 
         // Añadir el cubo a la escena
         scene.add(cube);
 
-        // Renderizar la escena
+        // Función para ajustar el tamaño del renderer y la cámara cuando la ventana cambia de tamaño
+        window.addEventListener('resize', function() {
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+
+            // Actualizar el aspect ratio de la cámara
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+
+            // Ajustar el tamaño del renderer
+            renderer.setSize(width, height);
+        });
+
+        // Función de animación para renderizar la escena continuamente
         function animate() {
             requestAnimationFrame(animate);
             cube.rotation.x += 0.01;  // Rotación del cubo en el eje X
