@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Cube</title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.js"></script>
+
+    <script>
+        // Crear la escena
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x2a3b4c);  // Establecer color de fondo
+
+        // Crear la cámara
+        var camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+        camera.position.z = 5;  // Alejar la cámara
+
+        // Crear el renderer
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);  // Usar el tamaño completo de la ventana
+        document.body.appendChild(renderer.domElement);
+
+        // Crear geometría de un cubo
+        var geometry = new THREE.BoxGeometry();
+        // Nota: "color" debe ir en minúsculas
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});  // Verde
+        var cube = new THREE.Mesh(geometry, material);
+
+        // Añadir el cubo a la escena
+        scene.add(cube);
+
+        // Renderizar la escena
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;  // Rotación del cubo en el eje X
+            cube.rotation.y += 0.01;  // Rotación del cubo en el eje Y
+            renderer.render(scene, camera);  // Renderizar escena y cámara
+        }
+        animate();
+    </script>
+</body>
+</html>
