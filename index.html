@@ -6,13 +6,20 @@
     <title>Hello Cube</title>
 </head>
 <body>
+    <button id="toggleWireframe">Toggle Wireframe</button>  <!-- Botón para alternar wireframe -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.js"></script>
 
     <script>
         // Crear la escena
         var scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x2a3b4c);  // Establecer color de fondo
-
+        scene.background = new THREE.Color("skyblue");
+        scene.fog = new THREE.Fog(0x76456c,0.1,8);
+          // Establecer color de fondo
+        var loader = new THREE.TextureLoader();
+        loader.load('./background.jfif', function (texture){
+            scene.background = texture;
+        });
         // Crear la cámara
         var camera = new THREE.PerspectiveCamera(
             75,
@@ -28,8 +35,10 @@
         document.body.appendChild(renderer.domElement);
 
         // Crear geometría de un cubo
-        var geometry = new THREE.BoxGeometry();
-        var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});  // Verde con wireframe
+        //var geometry = new THREE.BoxGeometry();
+        var geometry = new THREE.SphereGeometry(2, 10, 10);
+
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});  // Verde con wireframe inicialmente activado
         var cube = new THREE.Mesh(geometry, material);
 
         // Añadir el cubo a la escena
@@ -48,9 +57,15 @@
             renderer.setSize(width, height);
         });
 
+        // Alternar el wireframe cuando se presiona el botón
+        document.getElementById("toggleWireframe").addEventListener("click", function() {
+            cube.material.wireframe = !cube.material.wireframe;  // Alternar entre true y false
+        });
+
         // Función de animación para renderizar la escena continuamente
         function animate() {
             requestAnimationFrame(animate);
+            
             cube.rotation.x += 0.01;  // Rotación del cubo en el eje X
             cube.rotation.y += 0.01;  // Rotación del cubo en el eje Y
             renderer.render(scene, camera);  // Renderizar escena y cámara
